@@ -1,0 +1,4 @@
+pandas>=1.4.2
+openpyxl>=3.0.10
+requests>=2.27.1
+rich>=12.4.4
