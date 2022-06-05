@@ -3,8 +3,10 @@ from typing import Dict, List
 import pandas as pd
 
 
-def read_nodes(nodes_file: str, /) -> List[Dict[str, str]]:
-    nodes = pd.read_excel(io=nodes_file, sheet_name=0, usecols="A:F", engine="openpyxl")
+def read_nodes(__nodes_file: str, /) -> List[Dict[str, str]]:
+    nodes = pd.read_excel(
+        io=__nodes_file, sheet_name=0, usecols="A:F", engine="openpyxl"
+    )
     df = pd.DataFrame(data=nodes)
     return (
         df.fillna(value="")

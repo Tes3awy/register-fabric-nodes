@@ -3,7 +3,6 @@ from xml.etree import ElementTree as ET
 
 import requests
 from requests.exceptions import HTTPError
-from rich import print
 
 
 def register_node(apic: str, headers: Dict[str, str], node: Dict[str, str]) -> str:
@@ -26,11 +25,7 @@ def register_node(apic: str, headers: Dict[str, str], node: Dict[str, str]) -> s
         )
         r.raise_for_status()
     except HTTPError as e:
-        raise SystemExit(
-            print(
-                f"[red]{ET.fromstring(text=e.response.text).find(path='.//error').get(key='text')}"
-            )
-        ) from e
+        return f"[red]{ET.fromstring(text=e.response.text).find(path='.//error').get(key='text')}"
     else:
         if r.ok and r.status_code in [200, 201]:
             return f"[blue]Registered node {node['name']} (ID: {node['node_id']}) with serial number {node['sn']} to APIC"

@@ -21,37 +21,38 @@ def main():
 
     ## Processing
     # Login to APIC and get tokens
-    print("Logging in to APIC...", end="\r")
+    print("Logging into APIC...", end="\r")
     res = apic_login(apic=apic, usr=usr, pwd=pwd)
-    print("[green]Logged in to APIC successfully")
+    if not isinstance(res, str):
+        print("[green]Logged into APIC successfully")
 
-    headers = {
-        "cookie": res.headers.get("set-cookie"),
-        "apic-challenge": res.json()
-        .get("imdata")[0]
-        .get("aaaLogin")
-        .get("attributes")
-        .get("urlToken"),
-    }
+        headers = {
+            "cookie": res.headers.get("set-cookie"),
+            "apic-challenge": res.json()
+            .get("imdata")[0]
+            .get("aaaLogin")
+            .get("attributes")
+            .get("urlToken"),
+        }
 
-    # Read nodes from Excel file
-    nodes = read_nodes(nodes_file)
+        # Read nodes from Excel file
+        nodes = read_nodes(nodes_file)
 
-    start_time = perf_counter()
+        start_time = perf_counter()
 
-    # Register all nodes to APIC
-    for n, node in enumerate(iterable=nodes, start=1):
-        print(f"{n}/{len(nodes)} Registering node {node['name']}...", end="\r")
-        reg = register_node(apic=apic, headers=headers, node=node)
-        print(reg)
+        # Register all nodes to APIC
+        for n, node in enumerate(iterable=nodes, start=1):
+            print(f"{n}/{len(nodes)} Registering node {node['name']}...", end="\r")
+            reg = register_node(apic=apic, headers=headers, node=node)
+            print(reg)
 
-    # Output
-    print(f"[green]Registered {n}/{len(nodes)} APIC nodes", end="\n\n")
-    print(f"EET: {perf_counter() - start_time:.2f} second")
+        # Output
+        print(f"[green]Registered {n}/{len(nodes)} APIC nodes", end="\n\n")
+        print(f"EET: {perf_counter() - start_time:.2f} seconds")
 
-    # Logout of APIC
-    status = apic_logout(apic=apic, headers=headers, usr=usr)
-    print(status)
+        # Logout of APIC
+        status = apic_logout(apic=apic, headers=headers, usr=usr)
+        print(status)
 
 
 if __name__ == "__main__":
