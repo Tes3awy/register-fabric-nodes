@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from getpass import getpass
 from time import perf_counter
 from warnings import filterwarnings
@@ -17,7 +18,7 @@ def main():
     nodes_file = input("Fabric Nodes Excel file: ").strip() or "Fabric-Nodes.xlsx"
     apic = input("APIC IP Address: ").strip() or "198.18.133.200"
     usr = input("Username: ").strip() or "admin"
-    pwd = getpass(prompt="Password: ") or "C1sco12345"
+    pwd = getpass(prompt="Password: ").strip() or "C1sco12345"
 
     ## Processing
     # Login to APIC and get tokens
