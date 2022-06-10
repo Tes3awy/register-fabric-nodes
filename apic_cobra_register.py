@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 ## Imports
 import time
 import warnings
+from getpass import getpass
 
 from cobra.mit import access, request, session  # for accessing the APIC
 from cobra.mit.request import CommitError, RestError
@@ -10,13 +12,14 @@ from rich import print
 
 from read_nodes import read_nodes
 
-warnings.filterwarnings("ignore")  # Suppress all warnings
+# Suppress HTTPS warning
+warnings.filterwarnings(action="ignore", message=r"Unverified\sHTTPS\srequest\s.*")
 
 ## Inputs
 nodes_file = input("Fabric Nodes Excel file: ").strip() or "Fabric-Nodes.xlsx"
-apic = input("APIC IP Address: ").strip()
-username = input("Username: ").strip()
-password = input("Password: ").strip()
+apic = input("APIC IP Address: ").strip() or "198.18.133.200"
+username = input("Username: ").strip() or "admin"
+password = getpass(prompt="Password: ").strip() or "C1sco12345"
 
 ## Processing
 apic_session = session.LoginSession(
@@ -36,20 +39,15 @@ except (HTTPError, ConnectionError, InvalidURL) as e:
     raise SystemExit(print(f"[red]{e}")) from e
 else:
     print(f"[green]Logged into APIC as {apic_session.user}")
-    # session timeout
-    print(
-        f"[cyan]Session timeouts in {apic_session.refreshTimeoutSeconds/60} minutes",
-        end="\n\n",
-    )
 
     # select the top level object
     polUni = pol.Uni(parentMoOrDn="")
 
-    nodes = read_nodes(nodes_file)  # read ACI Nodes from Excel file
+    fabric_nodes = read_nodes(nodes_file)  # read ACI Nodes from Excel file
 
     start_time = time.perf_counter()
-    # register nodes
-    for node in nodes:
+    # register fabric nodes
+    for node in fabric_nodes:
         ctrlrInst = ctrlr.Inst(parentMoOrDn=polUni)
         fabricNodeIdentPol = fabric.NodeIdentPol(parentMoOrDn=ctrlrInst)
         fabricNodeIdentP = fabric.NodeIdentP(
@@ -75,10 +73,9 @@ else:
         else:
             # Equavilant to POST request
             # Commiting (Submitting) new configuration
-            # check if status code is ok (200) and returns boolean
-            if response.ok:
+            if response.ok and response.status_code in (200, 201):
                 print(
-                    f"[green]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} and ID {node['node_id']} to APIC"
+                    f"[magenta]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} and ID {node['node_id']} to POD {fabricNodeIdentP.podId}"
                 )
             else:
                 print(
