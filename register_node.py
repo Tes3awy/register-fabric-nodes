@@ -10,7 +10,7 @@ def register_node(apic: str, headers: Dict[str, str], node: Dict[str, str]) -> s
     <polUni>
         <ctrlrInst>
             <fabricNodeIdentPol>
-                <fabricNodeIdentP nodeType={node["type"].lower().strip()} role={node["role"].lower().strip()} podId={node["pod_id"]} serial={node["sn"].strip()} name={node["name"].strip()} nodeId={node["node_id"]} />
+                <fabricNodeIdentP nodeType={node["type"].lower().strip()} role={node["role"].lower().strip()} podId={node["pod_id"] or "1"} serial={node["serial"].strip()} name={node["name"].strip()} nodeId={node["node_id"]} />
             </fabricNodeIdentPol>
         </ctrlrInst>
     </polUni>
@@ -28,4 +28,4 @@ def register_node(apic: str, headers: Dict[str, str], node: Dict[str, str]) -> s
         return f"[red]{ET.fromstring(text=e.response.text).find(path='.//error').get(key='text')}"
     else:
         if r.ok and r.status_code in [200, 201]:
-            return f"[blue]Registered node {node['name']} (ID: {node['node_id']}) with serial number {node['sn']} to APIC"
+            return f"[blue]Registered node {node['name']} (ID: {node['node_id']}) with serial number {node['serial']} to APIC"
