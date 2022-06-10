@@ -12,78 +12,84 @@ from rich import print
 
 from read_nodes import read_nodes
 
-# Suppress HTTPS warning
-warnings.filterwarnings(action="ignore", message=r"Unverified\sHTTPS\srequest\s.*")
 
-## Inputs
-nodes_file = input("Fabric Nodes Excel file: ").strip() or "Fabric-Nodes.xlsx"
-apic = input("APIC IP Address: ").strip() or "198.18.133.200"
-username = input("Username: ").strip() or "admin"
-password = getpass(prompt="Password: ").strip() or "C1sco12345"
+def register_nodes():
+    # Suppress HTTPS warning
+    warnings.filterwarnings(action="ignore", message=r"Unverified\sHTTPS\srequest\s.*")
 
-## Processing
-apic_session = session.LoginSession(
-    controllerUrl=f"https://{apic}",
-    user=username,
-    password=password,
-    secure=False,
-    timeout=10,  # optional (default 90 seconds)
-    requestFormat="json",  # optional but recommended (default xml)
-)
-moDir = access.MoDirectory(session=apic_session)
+    ## Inputs
+    nodes_file = input("Fabric Nodes Excel file: ").strip() or "Fabric-Nodes.xlsx"
+    apic = input("APIC IP Address: ").strip() or "198.18.133.200"
+    username = input("Username: ").strip() or "admin"
+    password = getpass(prompt="Password: ").strip() or "C1sco12345"
 
-try:
-    print("\nLogging in into APIC...", end="\r")
-    moDir.login()
-except (HTTPError, ConnectionError, InvalidURL) as e:
-    raise SystemExit(print(f"[red]{e}")) from e
-else:
-    print(f"[green]Logged into APIC as {apic_session.user}")
+    ## Processing
+    apic_session = session.LoginSession(
+        controllerUrl=f"https://{apic}",
+        user=username,
+        password=password,
+        secure=False,
+        timeout=10,  # optional (default 90 seconds)
+        requestFormat="json",  # optional but recommended (default xml)
+    )
+    moDir = access.MoDirectory(session=apic_session)
 
-    # select the top level object
-    polUni = pol.Uni(parentMoOrDn="")
+    try:
+        print("\nLogging in into APIC...", end="\r")
+        moDir.login()
+    except (HTTPError, ConnectionError, InvalidURL) as e:
+        raise SystemExit(print(f"[red]{e}")) from e
+    else:
+        print(f"[green]Logged into APIC as {apic_session.user}")
 
-    fabric_nodes = read_nodes(nodes_file)  # read ACI Nodes from Excel file
+        # select the top level object
+        polUni = pol.Uni(parentMoOrDn="")
 
-    start_time = time.perf_counter()
-    # register fabric nodes
-    for node in fabric_nodes:
-        ctrlrInst = ctrlr.Inst(parentMoOrDn=polUni)
-        fabricNodeIdentPol = fabric.NodeIdentPol(parentMoOrDn=ctrlrInst)
-        fabricNodeIdentP = fabric.NodeIdentP(
-            parentMoOrDn=fabricNodeIdentPol,
-            name=node["name"].strip(),
-            serial=node["serial"].strip(),
-            podId=node["pod_id"] or "1",
-            nodeId=node["node_id"],
-            nodeType=node["type"].lower().strip(),
-            role=node["role"].lower().strip(),
-        )
+        fabric_nodes = read_nodes(nodes_file)  # read ACI Nodes from Excel file
 
-        ## Output
+        start_time = time.perf_counter()
+        # register fabric nodes
+        for node in fabric_nodes:
+            ctrlrInst = ctrlr.Inst(parentMoOrDn=polUni)
+            fabricNodeIdentPol = fabric.NodeIdentPol(parentMoOrDn=ctrlrInst)
+            fabricNodeIdentP = fabric.NodeIdentP(
+                parentMoOrDn=fabricNodeIdentPol,
+                name=node["name"].strip(),
+                serial=node["serial"].strip(),
+                podId=node["pod_id"] or "1",
+                nodeId=node["node_id"],
+                nodeType=node["type"].lower().strip(),
+                role=node["role"].lower().strip(),
+            )
 
-        # Queuing the new configuration
-        cfg_request = request.ConfigRequest()
-        try:
-            # add the new discovery to the configuration request
-            cfg_request.addMo(mo=polUni)  # offline validation
-            response = moDir.commit(configObject=cfg_request)
-        except (CommitError, RestError) as e:
-            raise SystemExit(print(f"[red]{e}")) from e
-        else:
-            # Equavilant to POST request
-            # Commiting (Submitting) new configuration
-            if response.ok and response.status_code in (200, 201):
-                print(
-                    f"[magenta]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} and ID {node['node_id']} to POD {fabricNodeIdentP.podId}"
-                )
+            ## Output
+
+            # Queuing the new configuration
+            cfg_request = request.ConfigRequest()
+            try:
+                # add the new discovery to the configuration request
+                cfg_request.addMo(mo=polUni)  # offline validation
+                response = moDir.commit(configObject=cfg_request)
+            except (CommitError, RestError) as e:
+                raise SystemExit(print(f"[red]{e}")) from e
             else:
-                print(
-                    f"[red]Failed to register APIC nodes, HTTP Status Code: {response.status_code}. Error: {response.json()}"
-                )
-    print(f"EET: {time.perf_counter() - start_time:.2f} second")
-finally:
-    # check if logged in already to logout
-    if moDir.session.cookie:
-        moDir.logout()  # logout
-        print("[yellow]Logged out")
+                # Equavilant to POST request
+                # Commiting (Submitting) new configuration
+                if response.ok and response.status_code in (200, 201):
+                    print(
+                        f"[magenta]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} and ID {node['node_id']} to POD {fabricNodeIdentP.podId}"
+                    )
+                else:
+                    print(
+                        f"[red]Failed to register APIC nodes, HTTP Status Code: {response.status_code}. Error: {response.json()}"
+                    )
+        print(f"EET: {time.perf_counter() - start_time:.2f} second")
+    finally:
+        # check if logged in already to logout
+        if moDir.session.cookie:
+            moDir.logout()  # logout
+            print("[yellow]Logged out")
+
+
+if __name__ == "__main__":
+    register_nodes()
