@@ -1,3 +1,5 @@
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat-square&labelColor=ef8336)](https://pycqa.github.io/isort/)
 # Register Fabric Inventory Nodes to ACI Fabric
 
 > When you run the application, the system determines if the node exists and, if not, adds it. If the node exists, the system registers it.
