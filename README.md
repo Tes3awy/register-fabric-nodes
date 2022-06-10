@@ -6,8 +6,8 @@
 
 1. [Directory Structure](#directory-structure)
 2. [Overview](#overview)
-3. [Fabric Node Discovery Statuses](#fabric-node-discovery-statuses)
-4. [Register Fabric Nodes](#register-fabric-nodes)
+3. [Fabric Inventory Node Discovery Statuses](#fabric-inventory-node-discovery-statuses)
+4. [Register Fabric Inventory Nodes](#register-fabric-inventory-nodes)
 5. [Bonus](#bonus)
 
 ## Directory Structure
