@@ -54,12 +54,12 @@ else:
         fabricNodeIdentPol = fabric.NodeIdentPol(parentMoOrDn=ctrlrInst)
         fabricNodeIdentP = fabric.NodeIdentP(
             parentMoOrDn=fabricNodeIdentPol,
-            nodeType=node["node_type"].lower().strip(),
-            podId=node["pod_id"],
-            serial=node["node_sn"].strip(),
-            name=node["node_name"].strip(),
+            name=node["name"].strip(),
+            serial=node["serial"].strip(),
+            podId=node["pod_id"] or "1",
             nodeId=node["node_id"],
-            role=node["node_role"].lower().strip(),
+            nodeType=node["type"].lower().strip(),
+            role=node["role"].lower().strip(),
         )
 
         ## Output
@@ -78,7 +78,7 @@ else:
             # check if status code is ok (200) and returns boolean
             if response.ok:
                 print(
-                    f"[green]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} ands ID {node['node_id']} to APIC"
+                    f"[green]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} and ID {node['node_id']} to APIC"
                 )
             else:
                 print(
