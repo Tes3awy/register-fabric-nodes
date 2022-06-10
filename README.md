@@ -53,7 +53,14 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 
 1. Download the repo from GitHub using `Code` button.
 2. Unzip the repo.
-3. Install requirements. `pip install --user -r requirements.txt`
+3. Create a Python virtual environment.
+3. Install requirements.
+
+```powershell
+register-fabric-nodes-main> python -m venv .venv
+register-fabric-nodes-main> python -m pip install --upgrade pip setuptools
+register-fabric-nodes-main> python -m pip install -r requirements.txt
+```
 
 ### Option B
 
@@ -62,10 +69,11 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 3. Install requirements.
 
 ```bash
-$ git clone <repo_name>
-$ cd <repo_name>
-$ python3 -m venv .venv
-$ pip install -r requirements.txt
+$ git clone https://github.com/Tes3awy/register-fabric-nodes.git
+$ cd register-fabric-nodes
+$ python -m venv .venv
+$ python -m pip install --upgrade pip setuptools
+$ python -m pip install -r requirements.txt
 ```
 
 Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
