@@ -1,8 +1,9 @@
-# Register Nodes to ACI Fabric
+# Register Fabric Inventory Nodes to ACI Fabric
 
 > When you run the application, the system determines if the node exists and, if not, adds it. If the node exists, the system registers it.
 
 ## Table of Contents
+
 1. [Directory Structure](#directory-structure)
 2. [Overview](#overview)
 3. [Fabric Node Discovery Statuses](#fabric-node-discovery-statuses)
@@ -29,12 +30,12 @@ After a switch is registered with the APIC, the switch is part of the APIC-manag
 ACI fabric, the APIC is the single point of provisioning, management, and monitoring for switches in the infrastructure.
 
 Switches in the `Nodes Pending Registration` tab table can have the following conditions:
-- A newly discovered but unregistered node has a node ID of 0 and has no IP address.
-- A manually entered (in APIC) but unregistered switch has an original status of Undiscovered until it is physically connected to the network. Once connected, the status changes to Discovered.
+- A newly discovered but unregistered node has a node ID of 0 and has no assigned IP address.
+- A manually entered (in APIC) but unregistered switch has an original status of `Undiscovered` until it is physically connected to the network. Once connected, the status changes to `Discovered`.
 
 **Note:** After the node ID is assigned, it cannot be updated.
 
-## Fabric Node Discovery Statuses
+## Fabric Inventory Node Discovery Statuses
 
 | Status        | Description                                      	    |
 |--------------	|------------------------------------------------------ |
@@ -46,7 +47,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 | Inactive     	| No IP connectivity.                               	|
 | Active       	| Node is active.                                   	|
 
-## Register Fabric Nodes
+## Register Fabric Inventory Nodes
 
 ### Option A
 
@@ -67,11 +68,11 @@ $ python3 -m venv .venv
 $ pip install -r requirements.txt
 ```
 
-Add the ACI Fabric nodes to the `Fabric-Nodes.xlsx` Excel file.
+Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
 
-> The file is already in the repo and is populated with two leafs and two spines from [Getting Started with Cisco ACI 5.2 v1](https://dcloud2-lon.cisco.com/content/demo/505213?returnPathTitleKey=content-view) from Cisco dCloud.
+> The Excel file is already in the repo and is populated with two leafs and two spines from [Getting Started with Cisco ACI 5.2 v1](https://dcloud2-lon.cisco.com/content/demo/505213?returnPathTitleKey=content-view) from Cisco dCloud.
 
-In `Node Type` column (Column A), you are able to select only one of the following four node types:
+In `Node Type` column (Column A), you can select only one of the following four node types:
 1. `unspecified`
 2. `tier-2-leaf`
 3. `remote-wan-leaf`
@@ -79,11 +80,16 @@ In `Node Type` column (Column A), you are able to select only one of the followi
 
 > If you don't know what to select in the `Node Type` column, select `unspecified`.
 
-In `Node Role` column (Column B), you are able to select only one of the following two node roles:
+In `Node Role` column (Column B), you can select only one of the following three node roles:
 1. `spine`
 2. `leaf`
+3. `unspecified`
 
-After filling all columns in `Fabric-Nodes.xlsx` file, run the application.
+After filling all columns in `Fabric-Nodes.xlsx` file, double check your entries.
+
+> After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means change neither the node type nor node id.
+
+Finally, run the application.
 
 **Windows**
 
@@ -101,6 +107,8 @@ $ python3 main.py
 $ python3 -m main
 ```
 
+---
+
 ## Bonus
 
-If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files installed)_, you can run the application using `apic_cobra_register.py`. It's much faster than the regular application (Around 1.8 times faster).
+If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files installed)_, you can run the application using `apic_cobra_register.py`. It's much faster than the regular application (Around 1.8x faster).
