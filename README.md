@@ -122,3 +122,9 @@ $ python3 -m main
 ## Bonus
 
 If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files installed)_, you can run the application using `apic_cobra_register.py`. It's much faster than the regular application (Around 1.8x faster).
+
+```bash
+$ python apic_cobra_register.py
+# or
+$ python -m apic_cobra_register
+```
