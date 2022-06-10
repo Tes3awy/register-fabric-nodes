@@ -16,7 +16,7 @@ def read_nodes(__nodes_file: str, /) -> List[Dict[str, str]]:
                 df.columns[0]: "type",  # Node Type
                 df.columns[1]: "role",  # Node Role
                 df.columns[2]: "pod_id",  # Pod ID
-                df.columns[3]: "sn",  # Node Serial Number
+                df.columns[3]: "serial",  # Node Serial Number
                 df.columns[4]: "name",  # Node Name
                 df.columns[5]: "node_id",  # Node ID
             }
