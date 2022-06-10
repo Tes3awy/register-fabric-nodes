@@ -97,7 +97,7 @@ In `Node Role` column (Column B), you can select only one of the following three
 
 After filling all columns in `Fabric-Nodes.xlsx` file, double check your entries.
 
-> After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means change neither the node type nor node id.
+> After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means edit neither the node type nor node id.
 
 Finally, run the application.
 
