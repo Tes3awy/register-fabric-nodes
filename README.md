@@ -61,7 +61,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 
 ```powershell
 register-fabric-nodes-main> python -m venv .venv
-register-fabric-nodes-main> .\venv\Scripts\Activate.ps1
+register-fabric-nodes-main> .\.venv\Scripts\Activate.ps1
 register-fabric-nodes-main> python -m pip install --upgrade pip setuptools
 register-fabric-nodes-main> python -m pip install -r requirements.txt
 ```
