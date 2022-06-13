@@ -1,3 +1,4 @@
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/Tes3awy/register-fabric-nodes)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat-square&labelColor=ef8336)](https://pycqa.github.io/isort/)
 # Register Fabric Inventory Nodes to ACI Fabric
@@ -82,6 +83,8 @@ Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
 
 > The Excel file is already in the repo and is populated with two leafs and two spines from [Getting Started with Cisco ACI 5.2 v1](https://dcloud2-lon.cisco.com/content/demo/505213?returnPathTitleKey=content-view) from Cisco dCloud.
 
+> **For non Cisco partners, you can use the application with the [`ACI Simulator AlwaysOn - V5`](https://devnetsandbox.cisco.com/RM/Diagram/Index/18a514e8-21d4-4c29-96b2-e3c16b1ee62e?diagramType=Topology) from Cisco DevNet.**
+
 In `Node Type` column (Column A), you can select only one of the following four node types:
 1. `unspecified`
 2. `tier-2-leaf`
@@ -115,6 +118,17 @@ Finally, run the application.
 $ python3 main.py
 # or
 $ python3 -m main
+```
+
+You will be prompted to enter Input Excel file, APIC URL, username, and password.
+
+Example:
+
+```bash
+Fabric Nodes Excel file: Fabric-Nodes.xlsx
+APIC IP Address: sandboxapicdc.cisco.com
+Username: admin
+Password: 
 ```
 
 ---
