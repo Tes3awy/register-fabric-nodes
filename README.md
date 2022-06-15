@@ -10,8 +10,9 @@
 1. [Directory Structure](#directory-structure)
 2. [Overview](#overview)
 3. [Fabric Inventory Node Discovery Statuses](#fabric-inventory-node-discovery-statuses)
-4. [Register Fabric Inventory Nodes](#register-fabric-inventory-nodes)
-5. [Bonus](#bonus)
+4. [Installation](#installation)
+5. [Register Fabric Inventory Nodes](#register-fabric-inventory-nodes)
+6. [Bonus](#bonus)
 
 ## Directory Structure
 
@@ -36,6 +37,8 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 - A newly discovered but unregistered node has a node ID of 0 and has no assigned IP address.
 - A manually entered (in APIC) but unregistered switch has an original status of `Undiscovered` until it is physically connected to the network. Once connected, the status changes to `Discovered`.
 
+![APIC Nodes](assets/apic_nodes.jpg)
+
 **Note:** After the node ID is assigned, it cannot be updated.
 
 ## Fabric Inventory Node Discovery Statuses
@@ -50,7 +53,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 | Inactive     	| No IP connectivity.                               	|
 | Active       	| Node is active.                                   	|
 
-## Register Fabric Inventory Nodes
+## Installation
 
 ### Option A
 
@@ -80,6 +83,8 @@ $ source .venv/bin/activate
 $ python -m pip install --upgrade pip setuptools
 $ python -m pip install -r requirements.txt
 ```
+
+## Register Fabric Inventory Nodes
 
 Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
 
