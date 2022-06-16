@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ## Imports
+import json
 import time
 import warnings
 from getpass import getpass
@@ -10,18 +11,18 @@ from cobra.model import ctrlr, fabric, pol  # for creating new fv objects
 from requests.exceptions import ConnectionError, HTTPError, InvalidURL
 from rich import print
 
-from read_nodes import read_nodes
+import nodes
 
 
-def register_nodes():
+def register_fabric_nodes():
     # Suppress HTTPS warning
     warnings.filterwarnings(action="ignore", message=r"Unverified\sHTTPS\srequest\s.*")
 
     ## Inputs
     nodes_file = input("Fabric Nodes Excel file: ").strip() or "Fabric-Nodes.xlsx"
-    apic = input("APIC IP Address: ").strip() or "198.18.133.200"
+    apic = input("APIC IP Address: ").strip() or "sandboxapicdc.cisco.com"
     username = input("Username: ").strip() or "admin"
-    password = getpass(prompt="Password: ").strip() or "C1sco12345"
+    password = getpass(prompt="Password: ").strip() or "!v3G@!4@Y"
 
     ## Processing
     apic_session = session.LoginSession(
@@ -45,7 +46,7 @@ def register_nodes():
         # select the top level object
         polUni = pol.Uni(parentMoOrDn="")
 
-        fabric_nodes = read_nodes(nodes_file)  # read ACI Nodes from Excel file
+        fabric_nodes = nodes.read(nodes_file)  # read ACI Nodes from Excel file
 
         start_time = time.perf_counter()
         # register fabric nodes
@@ -67,21 +68,18 @@ def register_nodes():
             # Queuing the new configuration
             cfg_request = request.ConfigRequest()
             try:
-                # add the new discovery to the configuration request
                 cfg_request.addMo(mo=polUni)  # offline validation
-                response = moDir.commit(configObject=cfg_request)
-            except (CommitError, RestError) as e:
-                raise SystemExit(print(f"[red]{e}")) from e
-            else:
                 # Equavilant to POST request
                 # Commiting (Submitting) new configuration
-                if response.ok and response.status_code in (200, 201):
+                response = moDir.commit(configObject=cfg_request)
+            except (CommitError, RestError) as e:
+                print(
+                    f"[red]{json.loads(e.reason)['imdata'][0]['error']['attributes']['text']}"
+                )
+            else:
+                if response.status_code in (200, 201) and response.ok:
                     print(
-                        f"[magenta]Registered {fabricNodeIdentP.name} with serial {fabricNodeIdentP.serial} and ID {node['node_id']} to POD {fabricNodeIdentP.podId}"
-                    )
-                else:
-                    print(
-                        f"[red]Failed to register APIC nodes, HTTP Status Code: {response.status_code}. Error: {response.json()}"
+                        f"[magenta]Registered {fabricNodeIdentP.name} (ID {fabricNodeIdentP.nodeId}) with serial number {fabricNodeIdentP.serial} to APIC"
                     )
         print(f"EET: {time.perf_counter() - start_time:.2f} second")
     finally:
@@ -92,4 +90,4 @@ def register_nodes():
 
 
 if __name__ == "__main__":
-    register_nodes()
+    register_fabric_nodes()
