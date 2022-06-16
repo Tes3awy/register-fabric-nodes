@@ -18,13 +18,16 @@
 
 ```
 │   main.py
-│   apic_login.py
-│   read_nodes.py
-│   register_node.py
-│   apic_logout.py
-│   apic_cobra_register.py
+│   apic.py
+│   nodes.py
+│   apic_cobra.py
 │   Fabric-Nodes.xlsx
+|   requirements.txt
 │   README.md
+│   LICENSE
+│   .gitignore
+├───assets
+│       apic_nodes.jpg
 └───
 ```
 
@@ -142,10 +145,10 @@ Password:
 
 ## Bonus
 
-If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files installed)_, you can run the application using `apic_cobra_register.py`. It's much faster than the regular application (Around 1.8x faster).
+If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files installed)_, you can run the application using `apic_cobra.py`. It's much faster than the regular application (Around 1.8x faster).
 
 ```bash
-$ python apic_cobra_register.py
+$ python apic_cobra.py
 # or
-$ python -m apic_cobra_register
+$ python -m apic_cobra
 ```
