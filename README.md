@@ -5,6 +5,8 @@
 
 > When you run the application, the system determines if the node exists and, if not, adds it. If the node exists, the system registers it.
 
+> The application uses the APIC-Challenge token for a stronger API session security. To learn more about the challenge token, see [Requiring a Challenge Token for an API Session](https://www.cisco.com/c/en/us/td/docs/switches/datacenter/aci/apic/sw/2-x/rest_cfg/2_1_x/b_Cisco_APIC_REST_API_Configuration_Guide/b_Cisco_APIC_REST_API_Configuration_Guide_chapter_01.html#ariaid-title33).
+
 ## Table of Contents
 
 1. [Directory Structure](#directory-structure)
@@ -66,9 +68,8 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 3. Install requirements.
 
 ```powershell
-register-fabric-nodes-main> python -m venv .venv
+register-fabric-nodes-main> python -m venv .venv --upgrade-deps
 register-fabric-nodes-main> .\.venv\Scripts\Activate.ps1
-register-fabric-nodes-main> python -m pip install --upgrade pip setuptools
 register-fabric-nodes-main> python -m pip install -r requirements.txt
 ```
 
@@ -81,9 +82,8 @@ register-fabric-nodes-main> python -m pip install -r requirements.txt
 ```bash
 $ git clone https://github.com/Tes3awy/register-fabric-nodes.git
 $ cd register-fabric-nodes
-$ python -m venv .venv
+$ python -m venv .venv --upgrade-deps
 $ source .venv/bin/activate
-$ python -m pip install --upgrade pip setuptools
 $ python -m pip install -r requirements.txt
 ```
 
@@ -93,7 +93,7 @@ Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
 
 > The Excel file is already in the repo and is populated with two leafs and two spines from [Getting Started with Cisco ACI 5.2 v1](https://dcloud2-lon.cisco.com/content/demo/505213?returnPathTitleKey=content-view) from Cisco dCloud.
 
-> **For non Cisco partners, you can use the application with the [`ACI Simulator AlwaysOn - V5`](https://devnetsandbox.cisco.com/RM/Diagram/Index/18a514e8-21d4-4c29-96b2-e3c16b1ee62e?diagramType=Topology) from Cisco DevNet.**
+> **For non Cisco partners, you can use the application with the [`ACI Simulator AlwaysOn - V5`](https://devnetsandbox.cisco.com/RM/Diagram/Index/18a514e8-21d4-4c29-96b2-e3c16b1ee62e?diagramType=Topology) from Cisco DevNet Sandbox.**
 
 In `Node Type` column (Column A), you can select only one of the following four node types:
 1. `unspecified`
