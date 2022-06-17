@@ -18,6 +18,8 @@
 
 ## Directory Structure
 
+The directory contains the following files:
+
 ```
 │   main.py
 │   apic.py
@@ -30,8 +32,15 @@
 │   .gitignore
 ├───assets
 │       apic_nodes.jpg
+│       registered_nodes.jpg
 └───
 ```
+
+1. `apic.py` module contains the APIC functions to connect and have access to the APIC Controller.
+2. `nodes.py` module contains the functions to read nodes to be registered and register those nodes.
+3. `main.py` module contains the main function to run the application.
+4. `Fabric-Nodes.xlsx` is a spreadsheet with the nodes to be registered _(Columns A and B are using [data validation](https://support.microsoft.com/en-us/office/apply-data-validation-to-cells-29fecbcc-d1b9-42c1-9d76-eff3ce5f7249) Excel feature to restrict the type of data and to show an error alert if values other than those in the drop-down list is entered)_.
+5. For `apic_cobra.py` module, check [Bonus](#bonus) section.
 
 ## Overview
 
@@ -49,7 +58,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 ## Fabric Inventory Node Discovery Statuses
 
 | Status        | Description                                      	    |
-|--------------	|------------------------------------------------------ |
+| -------------	| ----------------------------------------------------- |
 | Unknown      	| Node is discovered but no Node ID policy configured. 	|
 | Undiscovered 	| Node ID configured but not yet discovered.        	|
 | Discovering  	| Node is discovered but IP not yet assigned.          	|
@@ -64,7 +73,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 
 1. Download the repo from GitHub using `Code` button.
 2. Unzip the repo.
-3. Create a Python virtual environment.
+3. Create a Python virtual environment and activate it.
 3. Install requirements.
 
 ```powershell
@@ -76,7 +85,7 @@ register-fabric-nodes-main> python -m pip install -r requirements.txt
 ### Option B
 
 1. Clone the repo from GitHub.
-2. Create a Python virtual environment.
+2. Create a Python virtual environment and activate it.
 3. Install requirements.
 
 ```bash
@@ -95,7 +104,7 @@ Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
 
 > **For non Cisco partners, you can use the application with the [`ACI Simulator AlwaysOn - V5`](https://devnetsandbox.cisco.com/RM/Diagram/Index/18a514e8-21d4-4c29-96b2-e3c16b1ee62e?diagramType=Topology) from Cisco DevNet Sandbox.**
 
-In `Node Type` column (Column A), you can select only one of the following four node types:
+In `Node Type` column (Column A), you can select only one of the following _four_ valid node types:
 1. `unspecified`
 2. `tier-2-leaf`
 3. `remote-wan-leaf`
@@ -103,14 +112,16 @@ In `Node Type` column (Column A), you can select only one of the following four 
 
 > If you don't know what to select in the `Node Type` column, select `unspecified`.
 
-In `Node Role` column (Column B), you can select only one of the following three node roles:
+In `Node Role` column (Column B), you can select only one of the following _three_ valid node roles:
 1. `spine`
 2. `leaf`
 3. `unspecified`
 
 After filling all columns in `Fabric-Nodes.xlsx` file, double check your entries.
 
-> After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means edit neither the node type nor node id.
+![Registered Nodes](assets/registered_nodes.jpg)
+
+**Note:** After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means edit neither the node type nor node id.
 
 Finally, run the application.
 
