@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from getpass import getpass
-from time import perf_counter
 from warnings import filterwarnings
 from xml.etree import ElementTree as ET
 
@@ -47,14 +46,13 @@ def main():
                 print(f"[red]{nodes_file} is not found! Check typos in filename")
             ) from e
         else:
-            start_time = perf_counter()
-
             # Register nodes to ACI Fabric
-            i = 0
+            i, eet = 0, 0.0
             for node in fab_nodes:
                 print(f"Registering node {node['name']}...", end="\r")
                 try:
-                    nodes.register(apic=apic_ip, headers=headers, node=node)
+                    reg_res = nodes.register(apic=apic_ip, headers=headers, node=node)
+                    eet += reg_res.elapsed.total_seconds()
                 except HTTPError as e:
                     print(
                         f"[red]{ET.fromstring(text=e.response.text).find(path='.//error').get(key='text')}"
@@ -67,13 +65,13 @@ def main():
 
             # Output
             print(f"[green]Registered {i}/{len(fab_nodes)} APIC nodes", end="\n\n")
-            print(f"EET: {perf_counter() - start_time:.2f} seconds")
+            print(f"EET: {eet:.2f} seconds")
         finally:
             if res is not None:
                 # Logout from APIC
-                status = apic.logout(apic=apic_ip, headers=headers, usr=usr)
-                if "deleted" in status.headers.get("set-cookie") and status.ok:
-                    print("[yellow]Logged out")
+                out_res = apic.logout(apic=apic_ip, headers=headers, usr=usr)
+                if "deleted" in out_res.headers.get("set-cookie") and out_res.ok:
+                    print(f"[magenta]Logged out from {apic_ip}")
 
 
 if __name__ == "__main__":
