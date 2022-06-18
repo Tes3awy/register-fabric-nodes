@@ -49,18 +49,18 @@ def main():
             # Register nodes to ACI Fabric
             i, eet = 0, 0.0
             for node in fab_nodes:
-                print(f"Registering node {node['name']}...", end="\r")
+                print(f"Registering node {node.get('name')}...", end="\r")
                 try:
                     reg_res = nodes.register(apic=apic_ip, headers=headers, node=node)
                     eet += reg_res.elapsed.total_seconds()
                 except HTTPError as e:
                     print(
-                        f"[red]{ET.fromstring(text=e.response.text).find(path='.//error').get(key='text')}"
+                        f"[red]{node.get('name')}: {ET.fromstring(text=e.response.text).find(path='.//error').get(key='text')}"
                     )
                 else:
                     i += 1
                     print(
-                        f"[blue]Registered {node['name']} (ID: {node['node_id']}) with serial number {node['serial']} to APIC"
+                        f"[blue]Registered {node.get('name')} (ID: {node.get('node_id')}) with serial number {node.get('serial')} to APIC"
                     )
 
             # Output
