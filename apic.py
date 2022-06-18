@@ -50,5 +50,6 @@ def logout(apic: str, headers: dict, usr: str) -> requests.Response:
         json={"aaaUser": {"attributes": {"name": usr}}},
         verify=False,
     )
+    r.close()
     r.raise_for_status()
     return r
