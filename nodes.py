@@ -18,21 +18,19 @@ def read(__nodes_file: str, /) -> List[Dict[str, str]]:
     List[Dict[str, str]]
         List of dictionaries of Fabric nodes
     """
-    nodes = pd.read_excel(
-        io=__nodes_file, sheet_name=0, usecols="A:F", engine="openpyxl"
-    )
+    nodes = pd.read_excel(io=__nodes_file, sheet_name=0, engine="openpyxl")
     df = pd.DataFrame(data=nodes)
     return (
-        df.fillna(value="")  # Fill empty cells with empty string
-        .drop_duplicates(subset=[df.columns[3]])  # Drop duplicates by serial number
+        df.fillna(value="")  # Fill nan cells with empty string
+        .drop_duplicates(subset=["Serial Number"])
         .rename(
             columns={
-                df.columns[0]: "type",  # Node Type
-                df.columns[1]: "role",  # Node Role
-                df.columns[2]: "pod_id",  # Pod ID
-                df.columns[3]: "serial",  # Node Serial Number
-                df.columns[4]: "name",  # Node Name
-                df.columns[5]: "node_id",  # Node ID
+                "Node Type": "type",
+                "Node Role": "role",
+                "POD ID": "pod_id",
+                "Serial Number": "serial",
+                "Node Name": "name",
+                "Node ID": "node_id",
             }
         )
         .to_dict(orient="records")
@@ -65,7 +63,7 @@ def register(
     <polUni>
         <ctrlrInst>
             <fabricNodeIdentPol>
-                <fabricNodeIdentP nodeType={node["type"].lower().strip()} role={node["role"].lower().strip()} podId={node["pod_id"] or "1"} serial={node["serial"].strip()} name={node["name"].strip()} nodeId={node["node_id"]} />
+                <fabricNodeIdentP nodeType="{node.get("type", "unspecified").lower().strip()}" role="{node.get("role", "unspecified").lower().strip()}" podId="{node.get("pod_id", 1) or 1}" serial="{node.get("serial").strip()}" name="{node.get("name").strip()}" nodeId="{node.get("node_id")}" />
             </fabricNodeIdentPol>
         </ctrlrInst>
     </polUni>
