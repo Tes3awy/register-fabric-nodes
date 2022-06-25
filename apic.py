@@ -19,9 +19,10 @@ def login(apic: str, usr: str, pwd: str) -> requests.Response:
     requests.Response
         APIC login response
     """
-    url = f"https://{apic}/api/aaaLogin.json?gui-token-request=yes"
+    url = f"https://{apic}/api/aaaLogin.json"
+    params = {"gui-token-request": "yes"}
     payload = {"aaaUser": {"attributes": {"name": usr, "pwd": pwd}}}
-    r = requests.post(url=url, json=payload, timeout=10.0, verify=False)
+    r = requests.post(url=url, params=params, json=payload, timeout=10.0, verify=False)
     r.raise_for_status()
     return r
 
