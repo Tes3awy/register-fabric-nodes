@@ -51,6 +51,7 @@ After a switch is registered with the APIC, the switch is part of the APIC-manag
 ACI fabric, the APIC is the single point of provisioning, management, and monitoring for switches in the infrastructure.
 
 Switches in the `Nodes Pending Registration` tab table can have the following conditions:
+
 - A newly discovered but unregistered node has a node ID of 0 and has no assigned IP address.
 - A manually entered (in APIC) but unregistered switch has an original status of `Undiscovered` until it is physically connected to the network. Once connected, the status changes to `Discovered`.
 
@@ -60,15 +61,15 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 
 ## Fabric Inventory Node Discovery Statuses
 
-| Status        | Description                                      	    |
-| -------------	| ----------------------------------------------------- |
-| Unknown      	| Node is discovered but no Node ID policy configured. 	|
-| Undiscovered 	| Node ID configured but not yet discovered.        	|
-| Discovering  	| Node is discovered but IP not yet assigned.          	|
-| Unsupported  	| Node is not a supported model.                    	|
-| Disabled     	| Node has been decommissioned.                     	|
-| Inactive     	| No IP connectivity.                               	|
-| Active       	| Node is active.                                   	|
+| Status       | Description                                             |
+| ------------ | ------------------------------------------------------- |
+| Unknown      | Node is discovered but no Node ID policy is configured. |
+| Undiscovered | Node ID configured but is not yet discovered.           |
+| Discovering  | Node is discovered but IP is not yet assigned.          |
+| Unsupported  | Node is not a supported model.                          |
+| Disabled     | Node has been decommissioned.                           |
+| Inactive     | No IP connectivity.                                     |
+| Active       | Node is active.                                         |
 
 ## Installation
 
@@ -77,7 +78,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 1. Download the repo from GitHub using `Code` button.
 2. Unzip the repo.
 3. Create a Python virtual environment and activate it.
-3. Install requirements.
+4. Install requirements.
 
 ```powershell
 register-fabric-nodes-main> python -m venv .venv --upgrade-deps
@@ -108,6 +109,7 @@ Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
 > **For non Cisco partners, you can use the application with the [ACI Simulator AlwaysOn - V5](https://devnetsandbox.cisco.com/RM/Diagram/Index/18a514e8-21d4-4c29-96b2-e3c16b1ee62e?diagramType=Topology) from Cisco DevNet Sandbox.**
 
 In `Node Type` column (Column A), you can select only one of the following _four_ valid node types:
+
 1. `unspecified`
 2. `tier-2-leaf`
 3. `remote-wan-leaf`
@@ -116,11 +118,12 @@ In `Node Type` column (Column A), you can select only one of the following _four
 > If you don't know what to select in the `Node Type` column, select `unspecified`.
 
 In `Node Role` column (Column B), you can select only one of the following _three_ valid node roles:
+
 1. `spine`
 2. `leaf`
 3. `unspecified`
 
-After filling all columns in `Fabric-Nodes.xlsx` file, double check your entries.
+After filling all columns in `Fabric-Nodes.xlsx` file, double check your entries and save the Excel file.
 
 ![Registered Nodes](assets/registered_nodes.jpg)
 
@@ -136,7 +139,7 @@ Finally, run the application.
 > py -m main
 ```
 
-**Unix or macOS**
+**Nix or macOS**
 
 ```bash
 $ python3 main.py
@@ -152,7 +155,7 @@ Example:
 Fabric Nodes Excel file: Fabric-Nodes.xlsx
 APIC IP Address: sandboxapicdc.cisco.com
 Username: admin
-Password: 
+Password:
 ```
 
 ---
