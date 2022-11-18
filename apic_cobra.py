@@ -5,7 +5,7 @@ import time
 import warnings
 from getpass import getpass
 
-from cobra.mit import access, request, session  # for accessing the APIC
+from cobra.mit import access, request, session  # for accessing the APIC object
 from cobra.mit.request import CommitError, RestError
 from cobra.model import ctrlr, fabric, pol  # for creating new fv objects
 from requests.exceptions import ConnectionError, HTTPError, InvalidURL

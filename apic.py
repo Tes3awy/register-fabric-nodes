@@ -22,7 +22,14 @@ def login(apic: str, usr: str, pwd: str) -> requests.Response:
     url = f"https://{apic}/api/aaaLogin.json"
     params = {"gui-token-request": "yes"}
     payload = {"aaaUser": {"attributes": {"name": usr, "pwd": pwd}}}
-    r = requests.post(url=url, params=params, json=payload, timeout=10.0, verify=False)
+    r = requests.request(
+        method="POST",
+        url=url,
+        params=params,
+        json=payload,
+        timeout=10.0,
+        verify=False,
+    )
     r.raise_for_status()
     return r
 
@@ -45,7 +52,8 @@ def logout(apic: str, headers: dict, usr: str) -> requests.Response:
     requests.Response
         APIC logout response
     """
-    r = requests.post(
+    r = requests.request(
+        method="POST",
         url=f"https://{apic}/api/aaaLogout.json",
         headers=headers,
         json={"aaaUser": {"attributes": {"name": usr}}},
