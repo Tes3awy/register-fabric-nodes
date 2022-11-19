@@ -17,7 +17,7 @@
 3. [Fabric Inventory Node Discovery Statuses](#fabric-inventory-node-discovery-statuses)
 4. [Installation](#installation)
 5. [Register Fabric Inventory Nodes](#register-fabric-inventory-nodes)
-6. [Bonus](#bonus)
+6. [Bonus (Cobra SDK)](#bonus)
 
 ## Directory Structure
 
@@ -162,7 +162,7 @@ Password:
 
 ## Bonus
 
-If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files installed)_, you can run the application using `apic_cobra.py`. It's much faster than the regular application (Around 1.8x faster).
+If you have Cobra SDK installed _(`acicobra` and `acimodel` wheel files)_, you can run the application using `apic_cobra.py`. It's much faster than the regular application (Around 1.8x faster).
 
 ```bash
 $ python apic_cobra.py
