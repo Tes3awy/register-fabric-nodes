@@ -25,7 +25,7 @@ def read(__nodes_file: str, /) -> List[Dict[str, str]]:
         .drop_duplicates(subset=["Serial Number"])
         .rename(
             columns={
-                "Node Type": "type",
+                "Node Type": "node_type",
                 "Node Role": "role",
                 "POD ID": "pod_id",
                 "Serial Number": "serial",
@@ -59,21 +59,23 @@ def register(
     requests.Response
         Response from APIC register node API
     """
-    payload = f"""\
-    <polUni>
-        <ctrlrInst>
-            <fabricNodeIdentPol>
-                <fabricNodeIdentP nodeType="{node.get("type", "unspecified").lower().strip()}" role="{node.get("role", "unspecified").lower().strip()}" podId="{node.get("pod_id", 1) or 1}" serial="{node.get("serial").strip()}" name="{node.get("name").strip()}" nodeId="{node.get("node_id")}" />
-            </fabricNodeIdentPol>
-        </ctrlrInst>
-    </polUni>
-    """
-    r = requests.post(
-        url=f"https://{apic}/api/policymgr/mo/uni.xml",
-        headers=headers,
-        data=payload,
-        timeout=120.0,
-        verify=False,
-    )
+    url = f"https://{apic}/api/mo/uni/controller/nodeidentpol.json"
+    payload = {
+        "fabricNodeIdentP": {
+            "attributes": {
+                "nodeId": str(node.get("node_id")),
+                "nodeType": node.get("node_type"),
+                "role": node.get("role"),
+                "name": node.get("name").strip(),
+                "serial": node.get("serial").strip(),
+            }
+        },
+        "fabricNodePEp": {
+            "attributes": {
+                "tDn": f"topology/pod-{node.get('pod_id') or 1}/{node.get('name')}",
+            }
+        },
+    }
+    r = requests.post(url=url, headers=headers, json=payload, verify=False)
     r.raise_for_status()
     return r
