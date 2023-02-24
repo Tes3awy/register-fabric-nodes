@@ -4,7 +4,7 @@
 ![LICENSE](https://img.shields.io/github/license/Tes3awy/register-fabric-nodes?color=purple&style=flat-square&label=LICENSE)
 ![Commit Activity](https://img.shields.io/github/commit-activity/m/Tes3awy/register-fabric-nodes/main?logo=github&style=flat-square)
 
-# Register Inventory Nodes to ACI Fabric
+# Register Nodes to ACI Fabric
 
 > When you run the application, the system determines if the node exists and, if not, adds it. If the node exists, the system registers it.
 
@@ -14,9 +14,9 @@
 
 1. [Directory Structure](#directory-structure)
 2. [Overview](#overview)
-3. [Fabric Inventory Node Discovery Statuses](#fabric-inventory-node-discovery-statuses)
+3. [Fabric Node Discovery Statuses](#fabric-node-discovery-statuses)
 4. [Installation](#installation)
-5. [Register Fabric Inventory Nodes](#register-fabric-inventory-nodes)
+5. [Register Fabric Nodes](#register-fabric-nodes)
 6. [Bonus (Cobra SDK)](#bonus)
 
 ## Directory Structure
@@ -59,7 +59,7 @@ Switches in the `Nodes Pending Registration` tab table can have the following co
 
 **Note:** After the node ID is assigned, it cannot be updated.
 
-## Fabric Inventory Node Discovery Statuses
+## Fabric Node Discovery Statuses
 
 | Status       | Description                                             |
 | ------------ | ------------------------------------------------------- |
@@ -100,9 +100,9 @@ $ source .venv/bin/activate
 $ python -m pip install -r requirements.txt
 ```
 
-## Register Fabric Inventory Nodes
+## Register Fabric Nodes
 
-Add your ACI fabric inventory nodes to the `Fabric-Nodes.xlsx` Excel file.
+Add your ACI fabric nodes to the `Fabric-Nodes.xlsx` Excel file.
 
 > The Excel file is already in the repo and is populated with two leafs and two spines from [Getting Started with Cisco ACI 5.2 v1](https://dcloud2-lon.cisco.com/content/demo/505213?returnPathTitleKey=content-view) from Cisco dCloud.
 
@@ -125,9 +125,9 @@ In `Node Role` column (Column B), you can select only one of the following _thre
 
 After filling all columns in `Fabric-Nodes.xlsx` file, double check your entries and save the Excel file.
 
-![Registered Nodes](assets/registered_nodes.jpg)
+> **Note:** After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means edit neither the node type nor node id.
 
-**Note:** After a successful run, the node is removed from the `Nodes Pending Registration` tab table to `Registered Nodes` tab table and you cannot by any means edit neither the node type nor node id.
+![Registered Nodes](assets/registered_nodes.jpg)
 
 Finally, run the application.
 
