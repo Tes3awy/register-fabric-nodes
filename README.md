@@ -42,7 +42,7 @@ The directory contains the following files:
 1. `apic.py` module contains the APIC functions to connect and have access to the APIC Controller.
 2. `nodes.py` module contains the functions to read nodes to be registered and register those nodes.
 3. `main.py` module contains the main function to run the application.
-4. `Fabric-Nodes.xlsx` is an MS Excel spreadsheet with the nodes to be registered _(Columns A and B are using [Excel data validation](https://support.microsoft.com/en-us/office/apply-data-validation-to-cells-29fecbcc-d1b9-42c1-9d76-eff3ce5f7249) feature to restrict the type of data and to show an error alert if values other than those in the drop-down list is entered)_.
+4. `Fabric-Nodes.xlsx` is an MS Excel spreadsheet with four nodes to be registered _(All Columns are validated using [Excel data validation](https://support.microsoft.com/en-us/office/apply-data-validation-to-cells-29fecbcc-d1b9-42c1-9d76-eff3ce5f7249) feature to restrict duplicate or invalid data and to show an error alert even before registering the nodes)_.
 5. For `apic_cobra.py` module, check [Bonus](#bonus) section.
 
 ## Overview
