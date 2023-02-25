@@ -20,19 +20,19 @@ def get_input(prompt: str, default: str = None):
 def main():
     # Inputs
     nodes_file = get_input("Nodes Excel file: ", default="Fabric-Nodes.xlsx")
-    apic_ip = get_input("APIC IP Address: ", default="sandboxapicdc.cisco.com")
+    apic = get_input("APIC IP Address: ", default="sandboxapicdc.cisco.com")
     usr = get_input("Username: ", default="admin")
     pwd = getpass(prompt="Password: ") or "!v3G@!4@Y"
 
     ## Processing
     # Accessing APIC
-    print(f"\nAccessing {apic_ip}...", end="\r")
+    print(f"\nAccessing {apic}...", end="\r")
     try:
-        r = auth.login(apic=apic_ip, usr=usr, pwd=pwd)
+        r = auth.login(apic=apic, usr=usr, pwd=pwd)
     except (InvalidURL, HTTPError, ConnectionError, Timeout) as e:
         raise SystemExit(e) from e
     else:
-        print(f"[green]Accessed {apic_ip} successfully")
+        print(f"[green]Accessed {apic} successfully")
 
         headers = {
             "cookie": r.headers.get("set-cookie"),
@@ -54,7 +54,7 @@ def main():
             for node in fab_nodes:
                 print(f"Registering {node.get('name')}...", end="\r")
                 try:
-                    reg = nodes.register(apic=apic_ip, headers=headers, node=node)
+                    reg = nodes.register(apic=apic, headers=headers, node=node)
                     eet += reg.elapsed.total_seconds()
                 except HTTPError as e:
                     print(
@@ -72,9 +72,12 @@ def main():
                 end="\n\n",
             )
 
-        out_res = auth.logout(apic=apic_ip, headers=headers, usr=usr)
+        out_res = auth.logout(apic=apic, headers=headers, usr=usr)
         if out_res.ok and "deleted" in out_res.headers.get("set-cookie"):
-            print(f"[magenta]Closed {apic_ip} session")
+            print(f"[magenta]Closed {apic} session")
+        else:
+            print("[yellow]Registered nodes but might have not been logged out! Clear the session from the UI")
+
 
 
 if __name__ == "__main__":
