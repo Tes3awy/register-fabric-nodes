@@ -2,7 +2,13 @@
 from getpass import getpass
 from warnings import filterwarnings
 
-from requests.exceptions import ConnectionError, HTTPError, InvalidURL, Timeout
+from requests.exceptions import (
+    ConnectionError,
+    ConnectTimeout,
+    HTTPError,
+    InvalidURL,
+    Timeout,
+)
 from rich import print
 
 import auth
@@ -55,12 +61,12 @@ def main():
                 print(f"Registering {node.get('name')}...", end="\r")
                 try:
                     reg = nodes.register(apic=apic, headers=headers, node=node)
-                    eet += reg.elapsed.total_seconds()
-                except HTTPError as e:
+                except (HTTPError, ConnectTimeout) as e:
                     print(
                         f"[red]{node.get('name')}: {e.response.json().get('imdata')[0].get('error').get('attributes').get('text')}"
                     )
                 else:
+                    eet += reg.elapsed.total_seconds()
                     i += 1
                     print(
                         f"[green]Registered {node.get('name')} with ID {node.get('node_id')} and S/N {node.get('serial')}"

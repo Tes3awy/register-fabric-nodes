@@ -73,7 +73,7 @@ def register(
         },
         "fabricNodePEp": {
             "attributes": {
-                "tDn": f"topology/pod-{node.get('pod_id') or 1}/{node.get('name')}",
+                "tDn": f"topology/pod-{node.get('pod_id', 1)}/{node.get('name')}",
             }
         },
     }
